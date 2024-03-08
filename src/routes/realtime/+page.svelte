@@ -1,5 +1,6 @@
 <script>
     import JsonDisplayRow from "../../lib/JsonDisplayRow.svelte";
+    import Meters from "../../lib/Meters.svelte";
     let clear;
     let meters = [];
     let time = "";
@@ -8,7 +9,7 @@
     let ms = 1000; // Fetch interval in ms
     const fetchData = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5000/next", {
+        const response = await fetch("http://127.0.0.1:5000/realtime/next", {
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
@@ -64,23 +65,7 @@
     </div>
   
     <div class="card">
-      <div
-        style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px; justify-content: center;"
-      >
-        {#each meters as meter, index}
-          <div
-            id={index.toString()}
-            style="min-width: 200px; border-width: 1px; border-style: solid; border-color: {meter.surplus >=
-            0
-              ? '#00FF00'
-              : '#FF0000'}; padding: 8px; border-radius: 20px;"
-          >
-            <h3>Meter {meter.id}</h3>
-            <p>Surplus: {parseFloat(meter.surplus.toFixed(5))}</p>
-            <p style="min-width: 100px;">In Trade: {meter.in_trade}</p>
-          </div>
-        {/each}
-      </div>
+        <Meters {meters} />
     </div>
   </main>
   
