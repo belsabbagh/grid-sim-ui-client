@@ -42,9 +42,9 @@
       bind:value={selectedValue}
       on:input={handleInput}
     />
-    <p>
+    <h2>
       {formatDateTime(new Date(parameters.startDate.getTime() + selectedValue * 60 * 1000))}
-    </p>
+    </h2>
   {:else}
     <p>Loading...</p>
   {/if}

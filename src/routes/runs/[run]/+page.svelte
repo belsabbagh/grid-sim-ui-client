@@ -2,6 +2,7 @@
   import PlaybackBar from "../../../lib/PlaybackBar.svelte";
   import Meters from "../../../lib/Meters.svelte";
   import { writable } from "svelte/store";
+  import JsonDisplayRow from "../../../lib/JsonDisplayRow.svelte";
   export let data;
   let state = writable(data.firstState);
   async function fetchState(n) {
@@ -27,6 +28,7 @@
 </script>
 
 <main>
+  <h1>Playing back {data.runId}</h1>
   <PlaybackBar
     parameters={{
       startDate: new Date(data.parameters.START_DATE),
@@ -34,5 +36,6 @@
     }}
     onchange={fetchState}
   />
+  <JsonDisplayRow data={$state.grid_state} />
   <Meters meters={$state.meters} />
 </main>
