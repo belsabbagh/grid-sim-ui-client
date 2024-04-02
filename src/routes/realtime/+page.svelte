@@ -50,9 +50,9 @@
           <input
             type="range"
             id="intervalSlider"
-            min="100"
+            min="20"
             max="3000"
-            step="100"
+            step="20"
             bind:value={ms}
           />
           <span>{ms} ms</span>
