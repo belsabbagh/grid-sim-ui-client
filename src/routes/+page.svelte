@@ -1,3 +1,7 @@
+<script>
+  /** @type {import('./$types').PageData} */
+  export let data;
+</script>
 <main>
   <h1>Welcome to the home page</h1>
 
@@ -13,7 +17,7 @@
   <label for="endDate">End date:</label>
   <input type="datetime-local" id="endDate" name="endDate" value="2010-01-02T00:00" required>
   <div class="button-row">
-    <button type="submit">Start</button>
+    <button type="submit" disabled={data.running}>Start</button>
     <button type="reset">Reset</button>
   </div>
 </form>
