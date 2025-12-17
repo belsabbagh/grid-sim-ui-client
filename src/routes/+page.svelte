@@ -3,12 +3,13 @@ import JsonDisplayRow from "../lib/JsonDisplayRow.svelte";
 import Meters from "../lib/Meters.svelte";
 
 let meters = $state([]);
+let running = $state(false);
 let time = $state("");
 let remaining = $state(0);
 let gridState = $state({});
 async function handleSubmit(event) {
 	event.preventDefault(); // Stop page refresh
-
+	running = true;
 	// Extract form data to send to API
 	const formData = new FormData(event.currentTarget);
 	const data = Object.fromEntries(formData);
@@ -52,6 +53,8 @@ async function handleSubmit(event) {
 		}
 	} catch (error) {
 		console.error("Connection lost:", error);
+	} finally {
+		running = false;
 	}
 }
 </script>
@@ -66,7 +69,7 @@ async function handleSubmit(event) {
   <label for="startDate">Start date:</label>
   <input type="datetime-local" id="startDate" name="startDate" value="2020-01-01T00:00" required>
   <div class="button-row">
-    <button type="submit">Start</button>
+    <button type="submit" disabled={running}>Start</button>
     <button type="reset">Reset</button>
   </div>
 </form>
