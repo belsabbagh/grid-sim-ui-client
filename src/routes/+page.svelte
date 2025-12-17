@@ -60,7 +60,7 @@ async function handleSubmit(event) {
 
 <br>
 <h2>Start a new run</h2>
-<form action={handleSubmit} method="POST">
+<form onsubmit={handleSubmit} method="POST">
   <label for="numMeters">Number of meters:</label>
   <input type="number" id="numMeters" name="numMeters" min="2" max="30" value="10" required>
   <label for="startDate">Start date:</label>
