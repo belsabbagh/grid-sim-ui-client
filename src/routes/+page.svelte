@@ -24,10 +24,10 @@ async function handleSubmit(event) {
 
 		const reader = response.body.getReader();
 		const decoder = new TextDecoder();
-
-		while (true) {
-			const { value, done } = await reader.read();
-			if (done) break;
+		let done = false;
+		while (!done) {
+			const { value, done: isDone } = await reader.read();
+			if (isDone) break;
 
 			const chunk = decoder.decode(value, { stream: true });
 			const lines = chunk.split("\n").filter((line) => line.trim());
@@ -35,13 +35,16 @@ async function handleSubmit(event) {
 			for (const line of lines) {
 				try {
 					const data = JSON.parse(line);
-
+					if (data.status === "done") {
+						done = true;
+						break;
+					}
 					time = data.state.time;
 					meters = data.state.meters;
 
 					let formattedGrid = { ...data.state.grid_state };
 					for (let key in formattedGrid) {
-						formattedGrid[key] = parseFloat(formattedGrid[key].toFixed(5));
+						formattedGrid[key] = parseFloat(formattedGrid[key].toFixed(2));
 					}
 					gridState = formattedGrid;
 				} catch (e) {
