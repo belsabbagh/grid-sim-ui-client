@@ -15,6 +15,7 @@ async function handleSubmit(event) {
 	formData.forEach((value, key) => {
 		data[key] = value;
 	});
+	console.log(data);
 
 	try {
 		const response = await fetch("/api/run", {
