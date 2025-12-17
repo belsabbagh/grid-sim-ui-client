@@ -11,11 +11,7 @@ async function handleSubmit(event) {
 
 	// Extract form data to send to API
 	const formData = new FormData(event.currentTarget);
-	const data = {};
-	formData.forEach((value, key) => {
-		data[key] = value;
-	});
-	console.log(data);
+	const data = Object.fromEntries(formData);
 
 	try {
 		const response = await fetch("/api/run", {
@@ -64,7 +60,7 @@ async function handleSubmit(event) {
 
 <br>
 <h2>Start a new run</h2>
-<form action="/api/run" method="POST">
+<form action={handleSubmit} method="POST">
   <label for="numMeters">Number of meters:</label>
   <input type="number" id="numMeters" name="numMeters" min="2" max="30" value="10" required>
   <label for="startDate">Start date:</label>
