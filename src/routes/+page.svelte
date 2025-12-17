@@ -5,7 +5,6 @@ import Meters from "../lib/Meters.svelte";
 let meters = $state([]);
 let running = $state(false);
 let time = $state("");
-let remaining = $state(0);
 let gridState = $state({});
 async function handleSubmit(event) {
 	event.preventDefault(); // Stop page refresh
@@ -37,9 +36,8 @@ async function handleSubmit(event) {
 				try {
 					const data = JSON.parse(line);
 
-					time = data.time;
-					meters = data.meters;
-					remaining = data.remaining;
+					time = data.state.time;
+					meters = data.state.meters;
 
 					let formattedGrid = { ...data.grid_state };
 					for (let key in formattedGrid) {
@@ -79,25 +77,6 @@ async function handleSubmit(event) {
     <div class="control-block">
       <JsonDisplayRow data={gridState} />
     </div>
-  <!--   <div class="control-block frame-control"> -->
-  <!--     <div class="slider-container"> -->
-  <!--       <label for="intervalSlider">Interval:</label> -->
-  <!--       <input -->
-  <!--         type="range" -->
-  <!--         id="intervalSlider" -->
-  <!--         min="20" -->
-  <!--         max="3000" -->
-  <!--         step="20" -->
-  <!--         bind:value={ms} -->
-  <!--       /> -->
-  <!--       <span>{ms} ms</span> -->
-  <!--     </div> -->
-  <!--     <div class="remaining"> -->
-  <!--       <span>Remaining: {remaining}</span> -->
-  <!--     </div> -->
-  <!--   </div> -->
-  <!-- </div> -->
-  <!---->
   <div class="card">
     <Meters {meters} />
   </div>
