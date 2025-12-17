@@ -11,7 +11,10 @@ async function handleSubmit(event) {
 
 	// Extract form data to send to API
 	const formData = new FormData(event.currentTarget);
-	const data = Object.fromEntries(formData);
+	const data = {};
+	formData.forEach((value, key) => {
+		data[key] = value;
+	});
 
 	try {
 		const response = await fetch("/api/run", {
