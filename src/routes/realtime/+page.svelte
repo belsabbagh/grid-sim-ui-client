@@ -1,46 +1,46 @@
 <script>
-  import { run } from 'svelte/legacy';
+import { run } from "svelte/legacy";
 
-  import JsonDisplayRow from "../../lib/JsonDisplayRow.svelte";
-  import Meters from "../../lib/Meters.svelte";
-  let clear = $state();
-  let meters = $state([]);
-  let time = $state("");
-  let remaining = $state(0); // State for remaining attribute
-  let gridState = $state({}); // State for JSON data
-  let ms = $state(1000); // Fetch interval in ms
-  const fetchData = async () => {
-    try {
-      const response = await fetch("http://127.0.0.1:5000/realtime/next", {
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      });
-      if (!response.ok) return;
-      const data = await response.json();
-      if (data === null) return;
-      let grid_state = data.grid_state;
-      for (let key in grid_state) {
-        grid_state[key] = parseFloat(grid_state[key].toFixed(5));
-      }
-      time = data.time;
-      meters = data.meters;
-      remaining = data.remaining;
-      gridState = data.grid_state;
-    } catch (error) {
-      console.error(error);
-    }
-  };
+import JsonDisplayRow from "../../lib/JsonDisplayRow.svelte";
+import Meters from "../../lib/Meters.svelte";
+let clear = $state();
+let meters = $state([]);
+let time = $state("");
+let remaining = $state(0); // State for remaining attribute
+let gridState = $state({}); // State for JSON data
+let ms = $state(1000); // Fetch interval in ms
+const fetchData = async () => {
+	try {
+		const response = await fetch("http://127.0.0.1:5000/realtime/next", {
+			headers: {
+				"Content-Type": "application/json",
+				"Access-Control-Allow-Origin": "*",
+			},
+		});
+		if (!response.ok) return;
+		const data = await response.json();
+		if (data === null) return;
+		let grid_state = data.grid_state;
+		for (let key in grid_state) {
+			grid_state[key] = parseFloat(grid_state[key].toFixed(5));
+		}
+		time = data.time;
+		meters = data.meters;
+		remaining = data.remaining;
+		gridState = data.grid_state;
+	} catch (error) {
+		console.error(error);
+	}
+};
 
-  run(() => {
-    clearInterval(clear);
-    clear = setInterval(fetchData, ms);
-  });
+run(() => {
+	clearInterval(clear);
+	clear = setInterval(fetchData, ms);
+});
 </script>
 
 <main>
-  <h1>Grid Simulator</h1>
+  <h1>Simulation</h1>
   <h2>{time}</h2>
   <div class="controls">
     <div class="control-block">
