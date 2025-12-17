@@ -3,7 +3,7 @@
   import Meters from "../../../lib/Meters.svelte";
   import { writable } from "svelte/store";
   import JsonDisplayRow from "../../../lib/JsonDisplayRow.svelte";
-  export let data;
+  let { data } = $props();
   let state = writable(data.firstState);
   async function fetchState(n) {
   try {

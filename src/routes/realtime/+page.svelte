@@ -1,12 +1,14 @@
 <script>
+  import { run } from 'svelte/legacy';
+
   import JsonDisplayRow from "../../lib/JsonDisplayRow.svelte";
   import Meters from "../../lib/Meters.svelte";
-  let clear;
-  let meters = [];
-  let time = "";
-  let remaining = 0; // State for remaining attribute
-  let gridState = {}; // State for JSON data
-  let ms = 1000; // Fetch interval in ms
+  let clear = $state();
+  let meters = $state([]);
+  let time = $state("");
+  let remaining = $state(0); // State for remaining attribute
+  let gridState = $state({}); // State for JSON data
+  let ms = $state(1000); // Fetch interval in ms
   const fetchData = async () => {
     try {
       const response = await fetch("http://127.0.0.1:5000/realtime/next", {
@@ -31,10 +33,10 @@
     }
   };
 
-  $: {
+  run(() => {
     clearInterval(clear);
     clear = setInterval(fetchData, ms);
-  }
+  });
 </script>
 
 <main>

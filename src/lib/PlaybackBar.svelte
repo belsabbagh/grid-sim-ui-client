@@ -1,12 +1,18 @@
 <script>
   import { onMount } from "svelte";
 
-  export let selectedValue = 0;
-  export let parameters = {
+  /**
+   * @typedef {Object} Props
+   * @property {number} [selectedValue]
+   * @property {any} [parameters]
+   * @property {any} onchange
+   */
+
+  /** @type {Props} */
+  let { selectedValue = $bindable(0), parameters = {
     startDate: null,
     endDate: null,
-  };
-  export let onchange;
+  }, onchange } = $props();
 
   function formatDateTime(date) {
     const options = {
@@ -40,7 +46,7 @@
       min="0"
       max={(parameters.endDate - parameters.startDate) / (60 * 1000) - 1}
       bind:value={selectedValue}
-      on:input={handleInput}
+      oninput={handleInput}
     />
     <h2>
       {formatDateTime(new Date(parameters.startDate.getTime() + selectedValue * 60 * 1000))}

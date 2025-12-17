@@ -1,5 +1,5 @@
 <script>
-  export let meters = [];
+  let { meters = [] } = $props();
 </script>
 
 <div class="card-container">

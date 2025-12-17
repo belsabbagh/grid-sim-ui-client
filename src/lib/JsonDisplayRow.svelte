@@ -9,7 +9,7 @@
       return acc;
     }, []);
   };
-  export let data;
+  let { data } = $props();
 </script>
 
 <table style="width: auto; border-collapse: collapse; margin: 10px auto;">
