@@ -1,6 +1,6 @@
 <script>
-import JsonDisplayRow from "../../lib/JsonDisplayRow.svelte";
-import Meters from "../../lib/Meters.svelte";
+import JsonDisplayRow from "../lib/JsonDisplayRow.svelte";
+import Meters from "../lib/Meters.svelte";
 
 let meters = $state([]);
 let time = $state("");
