@@ -39,7 +39,7 @@ async function handleSubmit(event) {
 					time = data.state.time;
 					meters = data.state.meters;
 
-					let formattedGrid = { ...data.grid_state };
+					let formattedGrid = { ...data.state.grid_state };
 					for (let key in formattedGrid) {
 						formattedGrid[key] = parseFloat(formattedGrid[key].toFixed(5));
 					}
