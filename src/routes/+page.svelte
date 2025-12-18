@@ -42,7 +42,13 @@ async function handleSubmit(event) {
 					continue;
 				}
 				const jsonStr = msg.replace("data: ", "").trim();
-				const data = JSON.parse(jsonStr);
+				let data = null;
+				try {
+					data = JSON.parse(jsonStr);
+				} catch (error) {
+					console.error(error, jsonStr);
+					continue;
+				}
 				status = data.status;
 				if (status === "done" || status === "started") {
 					continue;
