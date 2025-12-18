@@ -6,6 +6,12 @@ let meters = $state([]);
 let status = $state("idle");
 let time = $state("");
 let gridState = $state({});
+let analytics = $state({});
+let tradeView = $state(true);
+
+function surplusAfterTrade(meters) {
+	return meters.map((i) => ({ ...i, surplus: i.surplus + i.purchased }));
+}
 
 async function handleSubmit(event) {
 	event.preventDefault();
@@ -15,7 +21,7 @@ async function handleSubmit(event) {
 	data.numMeters = parseInt(data.numMeters, 10);
 
 	try {
-		const response = await fetch("/api/run", {
+		const response = await fetch("http://localhost:5515/run", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(data),
@@ -42,7 +48,10 @@ async function handleSubmit(event) {
 					continue;
 				}
 				time = data.state.time;
-				meters = data.state.meters;
+				meters = tradeView
+					? surplusAfterTrade(data.state.meters)
+					: data.state.meters;
+				analytics = data.analytics;
 
 				let formattedGrid = { ...data.state.grid_state };
 				for (let key in formattedGrid) {
@@ -75,6 +84,10 @@ async function handleSubmit(event) {
   {#if status ==="running" || status === "done"}
   <h1>Simulation</h1>
   <h2>{time}</h2>
+   <div class="control-block">
+      <JsonDisplayRow data={analytics} />
+
+    </div>
 
     <div class="control-block">
       <JsonDisplayRow data={gridState} />
