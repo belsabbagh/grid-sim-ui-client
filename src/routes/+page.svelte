@@ -3,15 +3,33 @@ import JsonDisplayRow from "../lib/JsonDisplayRow.svelte";
 import Meters from "../lib/Meters.svelte";
 
 let meters = $state([]);
-let running = $state(false);
+let status = $state("idle");
 let time = $state("");
 let gridState = $state({});
+let ws = new WebSocket("http://localhost:8000/ws");
+
+ws.onmessage = (event) => {
+	const data = JSON.parse(event.data);
+	status = data.status;
+	if (status === "done" || status === "started") {
+		return;
+	}
+	time = data.state.time;
+	meters = data.state.meters;
+
+	let formattedGrid = { ...data.state.grid_state };
+	for (let key in formattedGrid) {
+		formattedGrid[key] = parseFloat(formattedGrid[key].toFixed(2));
+	}
+	gridState = formattedGrid;
+};
+
 async function handleSubmit(event) {
-	event.preventDefault(); // Stop page refresh
-	running = true;
-	// Extract form data to send to API
+	event.preventDefault();
+	status = "started";
 	const formData = new FormData(event.currentTarget);
 	const data = Object.fromEntries(formData);
+	data.numMeters = parseInt(data.numMeters, 10);
 
 	try {
 		const response = await fetch("/api/run", {
@@ -19,43 +37,39 @@ async function handleSubmit(event) {
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(data),
 		});
-
-		if (!response.ok) return;
-
 		const reader = response.body.getReader();
 		const decoder = new TextDecoder();
-		let done = false;
-		while (!done) {
-			const { value, done: isDone } = await reader.read();
-			if (isDone) break;
+		while (true) {
+			const { value, done } = await reader.read();
+			if (done) break;
 
 			const chunk = decoder.decode(value, { stream: true });
-			const lines = chunk.split("\n").filter((line) => line.trim());
 
-			for (const line of lines) {
-				try {
-					const data = JSON.parse(line);
-					if (data.status === "done") {
-						done = true;
-						break;
-					}
-					time = data.state.time;
-					meters = data.state.meters;
+			const messages = chunk.split("\n\n");
+			console.debug(messages);
 
-					let formattedGrid = { ...data.state.grid_state };
-					for (let key in formattedGrid) {
-						formattedGrid[key] = parseFloat(formattedGrid[key].toFixed(2));
-					}
-					gridState = formattedGrid;
-				} catch (e) {
-					console.error("Error parsing stream chunk", e);
+			for (const msg of messages) {
+				if (!msg.startsWith("data: ")) {
+					continue;
 				}
+				const jsonStr = msg.replace("data: ", "").trim();
+				const data = JSON.parse(jsonStr);
+				status = data.status;
+				if (status === "done" || status === "started") {
+					continue;
+				}
+				time = data.state.time;
+				meters = data.state.meters;
+
+				let formattedGrid = { ...data.state.grid_state };
+				for (let key in formattedGrid) {
+					formattedGrid[key] = parseFloat(formattedGrid[key].toFixed(2));
+				}
+				gridState = formattedGrid;
 			}
 		}
 	} catch (error) {
-		console.error("Connection lost:", error);
-	} finally {
-		running = false;
+		console.error(error);
 	}
 }
 </script>
@@ -70,20 +84,22 @@ async function handleSubmit(event) {
   <label for="startDate">Start date:</label>
   <input type="datetime-local" id="startDate" name="startDate" value="2020-01-01T00:00" required>
   <div class="button-row">
-    <button type="submit" disabled={running}>Start</button>
+    <button type="submit" disabled={status === "running"}>Start</button>
     <button type="reset">Reset</button>
   </div>
 </form>
+  {#if status ==="running" || status === "done"}
   <h1>Simulation</h1>
   <h2>{time}</h2>
-  <div class="controls">
+
     <div class="control-block">
       <JsonDisplayRow data={gridState} />
+
     </div>
   <div class="card">
     <Meters {meters} />
   </div>
-
+{/if}
 </main>
 
 
