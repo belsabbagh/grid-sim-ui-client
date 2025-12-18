@@ -53,6 +53,7 @@ async function handleSubmit(event) {
 		}
 	} catch (error) {
 		console.error(error);
+		status = "idle";
 	}
 }
 </script>
