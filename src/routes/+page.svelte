@@ -21,7 +21,7 @@ async function handleSubmit(event) {
 	data.numMeters = parseInt(data.numMeters, 10);
 
 	try {
-		const response = await fetch("http://localhost:5515/run", {
+		const response = await fetch("/api/run", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(data),
