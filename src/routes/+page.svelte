@@ -6,23 +6,6 @@ let meters = $state([]);
 let status = $state("idle");
 let time = $state("");
 let gridState = $state({});
-let ws = new WebSocket("http://localhost:8000/ws");
-
-ws.onmessage = (event) => {
-	const data = JSON.parse(event.data);
-	status = data.status;
-	if (status === "done" || status === "started") {
-		return;
-	}
-	time = data.state.time;
-	meters = data.state.meters;
-
-	let formattedGrid = { ...data.state.grid_state };
-	for (let key in formattedGrid) {
-		formattedGrid[key] = parseFloat(formattedGrid[key].toFixed(2));
-	}
-	gridState = formattedGrid;
-};
 
 async function handleSubmit(event) {
 	event.preventDefault();
