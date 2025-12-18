@@ -10,7 +10,10 @@ let analytics = $state({});
 let tradeView = $state(true);
 
 function surplusAfterTrade(meters) {
-	return meters.map((i) => ({ ...i, surplus: i.surplus + i.purchased }));
+	const sortedMeters = meters
+		.map((i) => ({ ...i, surplus: i.surplus + i.purchased }))
+		.sort((a, b) => a.id - b.id);
+	return sortedMeters;
 }
 
 async function handleSubmit(event) {
@@ -35,7 +38,6 @@ async function handleSubmit(event) {
 			const chunk = decoder.decode(value, { stream: true });
 
 			const messages = chunk.split("\n\n");
-			console.debug(messages);
 
 			for (const msg of messages) {
 				if (!msg.startsWith("data: ")) {
