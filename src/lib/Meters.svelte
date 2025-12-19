@@ -6,8 +6,8 @@ const { meters = [] } = $props();
     {#each meters as meter, index}
       <div class="meter-card" id={index.toString()} data-surplus-positive={meter.surplus >= 0}>
         <h3>Meter {meter.id}</h3>
-        <p>Surplus: {Number.parseFloat(meter.surplus.toFixed(5))}</p>
-        <p style="min-width: 100px;">In Trade: {meter.in_trade}</p>
+        <p>Surplus: {Number.parseFloat(meter.surplus)}</p>
+        <p style="min-width: 100px;">In Trade: {meter.from}</p>
       </div>
     {/each}
 </div>
