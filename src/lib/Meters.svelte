@@ -1,12 +1,19 @@
 <script>
-const { meters = [] } = $props();
+let { meters = [], tradeView = false } = $props();
+let displayMeters = $derived(
+	meters.map((m) => ({
+		...m,
+		displaySurplus: tradeView ? m.s + m.p : m.s,
+	})),
+);
 </script>
-
 <div class="card-container">
-    {#each meters as meter, index}
-      <div class="meter-card" id={index.toString()} data-surplus-positive={meter.s >= 0}>
+    {#each displayMeters as meter, i}
+      <div class="meter-card" id={i.toString()}
+data-status={meter.displaySurplus > 0 ? 'positive' : meter.displaySurplus < 0 ? 'negative' : 'zero'}
+    >
         <h3>Meter {meter.id}</h3>
-        <p>Surplus: {Number.parseFloat(meter.s)}</p>
+        <p>Surplus: {Number.parseFloat(meter.displaySurplus)}</p>
         <p style="min-width: 100px;">In Trade: {meter.f}</p>
       </div>
     {/each}
@@ -29,11 +36,21 @@ const { meters = [] } = $props();
     border-radius: 20px;
   }
 
-  /* Border color based on surplus */
-  .meter-card {
-    border-color: #FF0000; /* Default red */
-  }
-  .meter-card[data-surplus-positive="true"] {
-    border-color: #00FF00; /* Green if surplus >= 0 */
-  }
+/* Negative - Deep Crimson/Red */
+.meter-card[data-status="negative"] {
+  border-color: #FF4D4D; /* Slightly softer red for dark mode */
+  background-color: rgba(255, 77, 77, 0.1); /* 10% opacity */
+}
+
+/* Positive - Emerald/Green */
+.meter-card[data-status="positive"] {
+  border-color: #00E676; /* Vibrant but not piercing green */
+  background-color: rgba(0, 230, 118, 0.08); /* 8% opacity */
+}
+
+/* Zero - Special Amber/Bronze */
+.meter-card[data-status="zero"] {
+  border-color: #FFC107; /* Warm Gold/Amber */
+  background-color: rgba(255, 193, 7, 0.12); /* 12% opacity for a soft glow */
+}
 </style>

@@ -11,7 +11,7 @@ let tradeView = $state(true);
 
 function surplusAfterTrade(meters) {
 	const sortedMeters = meters
-		.map((i) => ({ ...i, s: i.s + i.p }))
+		.map((i) => ({ ...i, s: (i.s + i.p).toFixed(2) }))
 		.sort((a, b) => a.id - b.id);
 	return sortedMeters;
 }
@@ -33,7 +33,7 @@ async function handleSubmit(event) {
 	data.numMeters = parseInt(data.numMeters, 10);
 
 	try {
-		const response = await fetch("/api/run", {
+		const response = await fetch("http://localhost:5515/run", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(data),
@@ -83,16 +83,21 @@ async function handleSubmit(event) {
 }
 </script>
 <main>
-  <h1>Welcome to the home page</h1>
+  <h1>Energy Trading Simulator</h1>
 
 <br>
-<h2>Start a new run</h2>
+<h2>Run the simulation</h2>
+  <div class="card">
+    <p>The simulator uses real-life data to measure an estimate of power generation and average household consumption. It barely matters but it's a parameter nonetheless.</p>
+  </div>
 <form onsubmit={handleSubmit} method="POST">
-  <label for="numMeters">Number of meters:</label>
-  <input type="number" id="numMeters" name="numMeters" min="2" max="50" value="10" required>
-  <label for="startDate">Start date:</label>
-  <input type="datetime-local" id="startDate" name="startDate" value="2020-01-01T00:00" required>
-  <div class="button-row">
+    <div class="inputs">
+      <label for="numMeters">Number of meters:</label>
+      <input type="number" id="numMeters" name="numMeters" min="2" max="100" value="30" required>
+      <label for="startDate">Start date:</label>
+      <input type="datetime-local" id="startDate" name="startDate" value="2020-01-01T00:00" required>
+    </div>
+    <div class="button-row">
     <button type="submit" disabled={status === "running"}>Start</button>
     <button type="reset">Reset</button>
   </div>
@@ -109,7 +114,7 @@ async function handleSubmit(event) {
       </div>
     </div>
      <div class="card">
-    <Meters {meters} />
+    <Meters {meters} {tradeView} />
   </div>
 {/if}
 </main>
