@@ -29,7 +29,7 @@ data-status={meter.displaySurplus > 0 ? 'positive' : meter.displaySurplus < 0 ? 
   }
 
   .meter-card {
-    min-width: 200px;
+    min-width: 150px;
     border-width: 1px;
     border-style: solid;
     padding: 8px;
@@ -53,4 +53,11 @@ data-status={meter.displaySurplus > 0 ? 'positive' : meter.displaySurplus < 0 ? 
   border-color: #FFC107; /* Warm Gold/Amber */
   background-color: rgba(255, 193, 7, 0.12); /* 12% opacity for a soft glow */
 }
+
+
+  @media only screen and (max-width:720px) {
+.meter-card {
+      min-width: 100px;
+    }
+  }
 </style>
