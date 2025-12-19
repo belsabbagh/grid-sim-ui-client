@@ -92,16 +92,15 @@ async function handleSubmit(event) {
   {#if status ==="running" || status === "done"}
   <h1>Simulation</h1>
   <h2>{time}</h2>
-   <div class="control-block">
-      <JsonDisplayRow data={analytics} />
-
+    <div class="card">
+      <div class="meta-block">
+	<JsonDisplayRow data={analytics} />
+      </div>
+      <div class="meta-block">
+	<JsonDisplayRow data={gridState} />
+      </div>
     </div>
-
-    <div class="control-block">
-      <JsonDisplayRow data={gridState} />
-
-    </div>
-  <div class="card">
+     <div class="card">
     <Meters {meters} />
   </div>
 {/if}
@@ -128,10 +127,11 @@ async function handleSubmit(event) {
     align-items: center;
   }
 
-  .control-block {
+  .meta-block {
     border: 1px solid #ba6be5;
     padding: 10px;
     border-radius: 10px;
+    margin-bottom: 1rem;
   }
 
   .controls {
