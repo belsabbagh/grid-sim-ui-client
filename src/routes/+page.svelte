@@ -31,9 +31,9 @@ async function handleSubmit(event) {
 	const formData = new FormData(event.currentTarget);
 	const data = Object.fromEntries(formData);
 	data.numMeters = parseInt(data.numMeters, 10);
-
+	const endpoint = import.meta.env.VITE_API_URL;
 	try {
-		const response = await fetch("http://localhost:5515/run", {
+		const response = await fetch(`${endpoint}/run`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(data),
