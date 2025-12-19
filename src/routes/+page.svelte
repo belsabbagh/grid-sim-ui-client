@@ -15,7 +15,16 @@ function surplusAfterTrade(meters) {
 		.sort((a, b) => a.id - b.id);
 	return sortedMeters;
 }
-
+async function decompress(base64Data) {
+	const binaryString = atob(base64Data);
+	const bytes = Uint8Array.from(binaryString, (c) => c.charCodeAt(0));
+	const stream = new Response(bytes).body.pipeThrough(
+		new DecompressionStream("gzip"),
+	);
+	const decompressedText = await new Response(stream).text();
+	const originalData = JSON.parse(decompressedText);
+	return originalData;
+}
 async function handleSubmit(event) {
 	event.preventDefault();
 	status = "started";
@@ -56,9 +65,10 @@ async function handleSubmit(event) {
 					continue;
 				}
 				time = data.state.time;
+				const uncompressedMeters = await decompress(data.state.meters);
 				meters = tradeView
-					? surplusAfterTrade(data.state.meters)
-					: data.state.meters;
+					? surplusAfterTrade(uncompressedMeters)
+					: uncompressedMeters;
 				analytics = data.analytics;
 
 				let formattedGrid = { ...data.state.grid };
