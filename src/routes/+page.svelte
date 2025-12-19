@@ -24,7 +24,7 @@ async function handleSubmit(event) {
 	data.numMeters = parseInt(data.numMeters, 10);
 
 	try {
-		const response = await fetch("http://localhost:5515/run", {
+		const response = await fetch("/api/run", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(data),
@@ -79,7 +79,7 @@ async function handleSubmit(event) {
 <h2>Start a new run</h2>
 <form onsubmit={handleSubmit} method="POST">
   <label for="numMeters">Number of meters:</label>
-  <input type="number" id="numMeters" name="numMeters" min="2" max="30" value="10" required>
+  <input type="number" id="numMeters" name="numMeters" min="2" max="50" value="10" required>
   <label for="startDate">Start date:</label>
   <input type="datetime-local" id="startDate" name="startDate" value="2020-01-01T00:00" required>
   <div class="button-row">
