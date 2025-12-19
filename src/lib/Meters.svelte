@@ -4,10 +4,10 @@ const { meters = [] } = $props();
 
 <div class="card-container">
     {#each meters as meter, index}
-      <div class="meter-card" id={index.toString()} data-surplus-positive={meter.surplus >= 0}>
+      <div class="meter-card" id={index.toString()} data-surplus-positive={meter.s >= 0}>
         <h3>Meter {meter.id}</h3>
-        <p>Surplus: {Number.parseFloat(meter.surplus)}</p>
-        <p style="min-width: 100px;">In Trade: {meter.from}</p>
+        <p>Surplus: {Number.parseFloat(meter.s)}</p>
+        <p style="min-width: 100px;">In Trade: {meter.f}</p>
       </div>
     {/each}
 </div>

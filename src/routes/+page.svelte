@@ -11,7 +11,7 @@ let tradeView = $state(true);
 
 function surplusAfterTrade(meters) {
 	const sortedMeters = meters
-		.map((i) => ({ ...i, surplus: i.surplus + i.purchased }))
+		.map((i) => ({ ...i, s: i.s + i.p }))
 		.sort((a, b) => a.id - b.id);
 	return sortedMeters;
 }
@@ -61,7 +61,7 @@ async function handleSubmit(event) {
 					: data.state.meters;
 				analytics = data.analytics;
 
-				let formattedGrid = { ...data.state.grid_state };
+				let formattedGrid = { ...data.state.grid };
 
 				gridState = formattedGrid;
 			}
