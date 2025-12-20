@@ -95,7 +95,7 @@ async function handleSubmit(event) {
       <label for="numMeters">Number of meters:</label>
       <input type="number" id="numMeters" name="numMeters" min="2" max="100" value="30" required>
       <label for="startDate">Start date:</label>
-      <input type="datetime-local" id="startDate" name="startDate" value="2020-01-01T00:00" required>
+      <input type="datetime-local" id="startDate" name="startDate" value="2020-06-21T00:00" required>
     </div>
     <div class="button-row">
     <button type="submit" disabled={status === "running"}>Start</button>
