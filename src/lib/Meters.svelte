@@ -14,7 +14,7 @@ data-status={meter.displaySurplus > 0 ? 'positive' : meter.displaySurplus < 0 ? 
     >
         <h3>Meter {meter.id}</h3>
         <p>Surplus: {Number.parseFloat(meter.displaySurplus)}</p>
-        <p style="min-width: 100px;">{meter.f}</p>
+        <p style="min-width: 100px;">{meter.f || '-'}</p>
       </div>
     {/each}
 </div>
