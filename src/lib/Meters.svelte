@@ -10,7 +10,7 @@ let displayMeters = $derived(
 <div class="card-container">
     {#each displayMeters as meter, i}
       <div class="meter-card" id={i.toString()}
-data-status={meter.displaySurplus > 0 ? 'positive' : meter.displaySurplus < 0 ? 'negative' : 'zero'}
+data-status={meter.displaySurplus > 0 ? 'positive' : meter.displaySurplus === 0 ? 'zero' : 'negative'}
     >
         <h3>Meter {meter.id}</h3>
         <p>Surplus: {Number.parseFloat(meter.displaySurplus)}</p>

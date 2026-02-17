@@ -133,32 +133,10 @@ async function handleSubmit(event) {
     gap: 10px;
   }
 
-  .slider-container {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    align-items: center;
-  }
-
   .meta-block {
     border: 1px solid #ba6be5;
     padding: 10px;
     border-radius: 10px;
     margin-bottom: 1rem;
-  }
-
-  .controls {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    justify-content: space-around;
-    align-items: center;
-    padding: 10px;
-  }
-
-  .frame-control {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
   }
  </style>
